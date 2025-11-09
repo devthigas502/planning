@@ -1,0 +1,191 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FullCalendar Custom Styles */
+.fc {
+  font-family: inherit;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border-color: hsl(var(--border));
+}
+
+.fc-button-primary {
+  background-color: hsl(var(--primary)) !important;
+  border-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+}
+
+.fc-button-primary:hover {
+  background-color: hsl(var(--primary) / 0.9) !important;
+}
+
+.fc-button-primary:disabled {
+  opacity: 0.5;
+}
+
+.fc-daygrid-day-number {
+  color: hsl(var(--foreground));
+}
+
+.fc-col-header-cell-cushion {
+  color: hsl(var(--muted-foreground));
+}
+
+.fc-event {
+  cursor: pointer;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 340 10% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 340 10% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 340 10% 15%;
+    --primary: 340 82% 85%;
+    --primary-foreground: 340 50% 25%;
+    --secondary: 340 30% 95%;
+    --secondary-foreground: 340 10% 15%;
+    --muted: 340 30% 96%;
+    --muted-foreground: 340 10% 45%;
+    --accent: 340 40% 90%;
+    --accent-foreground: 340 10% 15%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 340 20% 90%;
+    --input: 340 20% 90%;
+    --ring: 340 82% 85%;
+    --radius: 0.75rem;
+    --chart-1: 340 70% 75%;
+    --chart-2: 330 65% 80%;
+    --chart-3: 350 60% 70%;
+    --chart-4: 335 55% 85%;
+    --chart-5: 345 75% 80%;
+  }
+
+  .dark {
+    --background: 340 10% 10%;
+    --foreground: 0 0% 95%;
+    --card: 340 10% 10%;
+    --card-foreground: 0 0% 95%;
+    --popover: 340 10% 10%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 340 82% 75%;
+    --primary-foreground: 340 10% 15%;
+    --secondary: 340 20% 20%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 340 20% 20%;
+    --muted-foreground: 340 10% 60%;
+    --accent: 340 30% 25%;
+    --accent-foreground: 0 0% 95%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 95%;
+    --border: 340 20% 25%;
+    --input: 340 20% 25%;
+    --ring: 340 82% 75%;
+    --chart-1: 340 70% 65%;
+    --chart-2: 330 65% 70%;
+    --chart-3: 350 60% 60%;
+    --chart-4: 335 55% 75%;
+    --chart-5: 345 75% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* TipTap Editor Styles */
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: hsl(var(--muted-foreground));
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.ProseMirror h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0.67em 0;
+}
+
+.ProseMirror h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.75em 0;
+}
+
+.ProseMirror h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin: 0.83em 0;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.5em;
+  margin: 1em 0;
+}
+
+.ProseMirror ul {
+  list-style: disc;
+}
+
+.ProseMirror ol {
+  list-style: decimal;
+}
+
+.ProseMirror li {
+  margin: 0.25em 0;
+}
+
+.ProseMirror blockquote {
+  border-left: 3px solid hsl(var(--primary));
+  padding-left: 1em;
+  margin: 1em 0;
+  color: hsl(var(--muted-foreground));
+}
+
+.ProseMirror pre {
+  background: hsl(var(--muted));
+  border-radius: var(--radius);
+  padding: 0.75em 1em;
+  margin: 1em 0;
+  overflow-x: auto;
+}
+
+.ProseMirror code {
+  background: hsl(var(--muted));
+  border-radius: 0.25em;
+  padding: 0.15em 0.4em;
+  font-family: monospace;
+  font-size: 0.9em;
+}
+
+.ProseMirror pre code {
+  background: none;
+  padding: 0;
+}
+
+.ProseMirror strong {
+  font-weight: bold;
+}
+
+.ProseMirror em {
+  font-style: italic;
+}
+
