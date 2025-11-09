@@ -11,7 +11,6 @@ import {
   ShoppingCart,
   CheckSquare,
   LogOut,
-  User,
   Menu,
   X,
 } from "lucide-react"

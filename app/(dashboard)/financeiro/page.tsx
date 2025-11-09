@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
@@ -78,13 +78,9 @@ export default function FinanceiroPage() {
     recurrence: "nao-recorrente"
   })
 
-  useEffect(() => {
-    fetchTransactions()
-    fetchSummary()
-  }, [selectedMonth, selectedYear, filterType])
-
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     try {
+      setLoading(true)
       const params = new URLSearchParams({
         month: selectedMonth,
         year: selectedYear,
@@ -104,9 +100,9 @@ export default function FinanceiroPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [filterType, selectedMonth, selectedYear])
 
-  const fetchSummary = async () => {
+  const fetchSummary = useCallback(async () => {
     try {
       const response = await fetch(`/api/transactions/summary?month=${selectedMonth}&year=${selectedYear}`)
       if (response.ok) {
@@ -116,7 +112,12 @@ export default function FinanceiroPage() {
     } catch (error) {
       console.error("Erro ao buscar resumo:", error)
     }
-  }
+  }, [selectedMonth, selectedYear])
+
+  useEffect(() => {
+    fetchTransactions()
+    fetchSummary()
+  }, [fetchSummary, fetchTransactions])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -280,7 +281,12 @@ export default function FinanceiroPage() {
             </div>
             <div className="flex-1">
               <Label>Tipo</Label>
-              <Select value={filterType} onValueChange={(value: any) => setFilterType(value)}>
+              <Select
+                value={filterType}
+                onValueChange={(value) =>
+                  setFilterType(value as "todas" | "receita" | "despesa")
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -469,7 +475,12 @@ export default function FinanceiroPage() {
                 <Label>Tipo *</Label>
                 <Select
                   value={formData.type}
-                  onValueChange={(value: any) => setFormData({ ...formData, type: value })}
+                  onValueChange={(value) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      type: value as "receita" | "despesa",
+                    }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -486,7 +497,9 @@ export default function FinanceiroPage() {
                 <Input
                   type="date"
                   value={formData.date}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, date: e.target.value }))
+                  }
                   required
                 />
               </div>
@@ -496,7 +509,9 @@ export default function FinanceiroPage() {
               <Label>Título *</Label>
               <Input
                 value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, title: e.target.value }))
+                }
                 placeholder="Ex: Salário, Mercado, etc."
                 required
               />
@@ -510,7 +525,9 @@ export default function FinanceiroPage() {
                   step="0.01"
                   min="0"
                   value={formData.amount}
-                  onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, amount: e.target.value }))
+                  }
                   placeholder="0,00"
                   required
                 />
@@ -520,7 +537,9 @@ export default function FinanceiroPage() {
                 <Label>Categoria *</Label>
                 <Select
                   value={formData.category}
-                  onValueChange={(value) => setFormData({ ...formData, category: value })}
+                  onValueChange={(value) =>
+                    setFormData((prev) => ({ ...prev, category: value }))
+                  }
                   required
                 >
                   <SelectTrigger>
@@ -539,7 +558,9 @@ export default function FinanceiroPage() {
               <Label>Conta/Banco</Label>
               <Input
                 value={formData.account}
-                onChange={(e) => setFormData({ ...formData, account: e.target.value })}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, account: e.target.value }))
+                }
                 placeholder="Ex: Nubank, Itaú, etc."
               />
             </div>
@@ -548,7 +569,12 @@ export default function FinanceiroPage() {
               <Label>Observações</Label>
               <Textarea
                 value={formData.observations}
-                onChange={(e) => setFormData({ ...formData, observations: e.target.value })}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    observations: e.target.value,
+                  }))
+                }
                 placeholder="Observações adicionais..."
                 rows={3}
               />
@@ -558,7 +584,12 @@ export default function FinanceiroPage() {
               <Label>Recorrência</Label>
               <Select
                 value={formData.recurrence || "nao-recorrente"}
-                onValueChange={(value) => setFormData({ ...formData, recurrence: value === "nao-recorrente" ? "" : value })}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    recurrence: value,
+                  }))
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Não recorrente" />
